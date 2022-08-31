@@ -16,58 +16,25 @@ class MainService
 
     public function searchPost(string $word)
     {
-//        $comments = Comment::where('body', 'like', '%enim%')->get(['postId', 'body']);
-        $data = Comment::addSelect(['title' => Post::select('title')
-            ->whereColumn('postId', 'posts.id')])
-            ->where('body', 'like', '%enim%')
-            ->get(['title', 'body']);
+//        $data = Comment::select(['title' => Post::select('title')
+//            ->whereColumn('postId', 'post.id')])
+//            ->where('body', 'like', '%enim%')
+//            ->get(['title', 'body']);
+        $data = Comment::where('body', 'like', '%enim%')
+            ->get();
+
+        dd($data->post);
         $data = $data->toArray();
+        dd($data);
         $posts = [];
-        $data = [
-            [
-              "postId" => 1,
-              "id" => 1,
-              "name" => "id labore ex et quam laborum",
-              "email" => "Eliseo@gardner.biz",
-              "body" => "laudantium enim quasi est quidem magnam voluptate ipsam eos",
-              "created_at" => "2022-08-31T05:34:45.000000Z",
-              "updated_at" => "2022-08-31T05:34:45.000000Z",
-              "title" => "sunt aut facere repellat provident occaecati excepturi optio reprehenderit"
-            ],
-            [
-                "postId" => 1,
-                "id" => 2,
-                "name" => "id labore ex et quam laborum",
-                "email" => "Eliseo@gardner.biz",
-                "body" => "laui est quidem magnam voluptate ipsam eos",
-                "created_at" => "2022-08-31T05:34:45.000000Z",
-                "updated_at" => "2022-08-31T05:34:45.000000Z",
-                "title" => "lat provident occaecati excepturi optio reprehenderit"
-            ]
-       ];
-       $test = [
-//           1 => [
-//               'title' => 'test title',
-//               'comments' => ['id' => 1, 'body' => 'comment body']
-//           ],
-//           2 => [
-//               'title' => 'test title2',
-//               'comments' => ['id' => 1, 'body' => 'comment body2']
-//           ]
-       ];
-//        dd($test[1]['comments']);
+
        foreach ($data as $item) {
-//           dd($item['postId']);
-           if (array_key_exists($item['postId'], $test)) {
-//               array_push($test[$item['postId']], [''])
-//               array_push($test[$item['postId']['comments']], ['id' => $item['id'], 'body' => $item['body']]);
-//               dd($test);
-               $test[$item['postId']['comments']][] = ['id' => $item['id'], 'body' => $item['body']];
+           if (array_key_exists($item['postId'], $posts)) {
+               $posts[$item['postId']]['comments'][] = ['id' => $item['id'], 'body' => $item['body']];
            } else {
-            $test[$item['postId']] = ['title' => $item['title'], 'comments' => [['id' => $item['id'], 'body' => $item['body']]]];
+               $posts[$item['postId']] = ['title' => $item['title'], 'comments' => [['id' => $item['id'], 'body' => $item['body']]]];
            }
        }
-//       dd($test);
-//        dd($data->toArray());
+       dd($posts);
     }
 }
